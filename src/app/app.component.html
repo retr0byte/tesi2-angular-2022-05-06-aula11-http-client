@@ -1,9 +1,27 @@
-<h3>
-  Tempo até o próximo update:
-  <span>{{ this.bitcoinService.timeUntilUpdate() }}s</span>
-</h3>
 
-<table border="1">
+<br><br>
+<div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">Informações do autor:</h5>
+    <p class="card-text">Nome: <u>Gabriel Castro da Silva</u></p>
+    <p class="card-text">RA: <u>0050832011035</u></p>
+    <a
+      href="https://github.com/retr0byte/"
+      target="_blank"
+      class="btn btn-primary"
+      >Acessar Github</a
+    >
+  </div>
+</div>
+
+<br><br>
+
+<p>
+  Tempo até o próximo update:
+  <strong>{{ this.bitcoinService.timeUntilUpdate() }}s</strong>
+</p>
+
+<table class="table table-striped">
   <tr>
     <th>Update/Time</th>
     <th>USD</th>

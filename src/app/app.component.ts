@@ -12,6 +12,7 @@ export class AppComponent {
   constructor(public bitcoinService: BitcoinService) {}
 
   ngOnInit() {
+    this.bitcoinService.getData();
     this.bitcoinService.startCount();
   }
 }
