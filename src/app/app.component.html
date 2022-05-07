@@ -1,5 +1,4 @@
-
-<br><br>
+<br /><br />
 <div class="card" style="width: 18rem;">
   <div class="card-body">
     <h5 class="card-title">Informações do autor:</h5>
@@ -14,12 +13,16 @@
   </div>
 </div>
 
-<br><br>
+<br /><br />
 
 <p>
   Tempo até o próximo update:
   <strong>{{ this.bitcoinService.timeUntilUpdate() }}s</strong>
 </p>
+
+<div class="alert alert-info" *ngIf="this.bitcoinService.alert">
+  {{ this.bitcoinService.alertMessage }}
+</div>
 
 <table class="table table-striped">
   <tr>

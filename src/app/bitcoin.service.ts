@@ -25,6 +25,8 @@ export class BitcoinService {
   current: Response;
   list: Array<Response> = [];
   counter: number = 0;
+  alert: boolean = false;
+  alertMessage: string;
 
   constructor(private http: HttpClient) {}
 
@@ -40,13 +42,17 @@ export class BitcoinService {
 
     if (lastDataSaved) {
       if (
-        current.bpi.USD.rate_float === lastDataSaved.bpi.USD.rate_float &&
-        current.bpi.USD.rate_float === lastDataSaved.bpi.USD.rate_float
+        current.bpi.USD.rate_float != lastDataSaved.bpi.USD.rate_float &&
+        current.bpi.BRL.rate_float != lastDataSaved.bpi.BRL.rate_float
       ) {
         this.list.push(current);
+        this.showAlert('Novas informações adicionadas com sucesso!');
+      } else {
+        this.showAlert('Não encontramos valores mais recentes...');
       }
     } else {
       this.list.push(current);
+      this.showAlert('Novas informações adicionadas com sucesso!');
     }
   }
 
@@ -54,7 +60,7 @@ export class BitcoinService {
     let timer = setInterval(() => {
       this.counter++;
 
-      if (this.counter == 60) {
+      if (this.counter == 20) {
         this.stopCount(timer);
 
         this.getData();
@@ -70,6 +76,14 @@ export class BitcoinService {
   }
 
   timeUntilUpdate() {
-    return 60 - this.counter;
+    return 20 - this.counter;
+  }
+
+  showAlert(message: string) {
+    this.alertMessage = message;
+    this.alert = true;
+    setTimeout(() => {
+      this.alert = false;
+    }, 3000);
   }
 }
