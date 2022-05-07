@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { last } from 'rxjs/operators';
 
 interface Response {
   time: {
@@ -18,15 +17,30 @@ interface Response {
   };
 }
 
+interface Alerts {
+  enabled: boolean;
+  message: string;
+  highlight: AlertHighlights;
+}
+
+enum AlertHighlights {
+  danger = 'alert-danger',
+  success = 'alert-success',
+}
+
 @Injectable()
 export class BitcoinService {
   private apiUrl: string =
     'https://api.coindesk.com/v1/bpi/currentprice/BRL.json';
-  current: Response;
+
+  private counter: number = 0;
+  private updateInterval: number = 60;
   list: Array<Response> = [];
-  counter: number = 0;
-  alert: boolean = false;
-  alertMessage: string;
+  alert: Alerts = {
+    enabled: false,
+    message: '',
+    highlight: AlertHighlights.danger,
+  };
 
   constructor(private http: HttpClient) {}
 
@@ -46,13 +60,22 @@ export class BitcoinService {
         current.bpi.BRL.rate_float != lastDataSaved.bpi.BRL.rate_float
       ) {
         this.list.push(current);
-        this.showAlert('Novas informações adicionadas com sucesso!');
+        this.showAlert(
+          'Novas informações adicionadas com sucesso!',
+          AlertHighlights.success
+        );
       } else {
-        this.showAlert('Não encontramos valores mais recentes...');
+        this.showAlert(
+          'Não encontramos valores mais recentes...',
+          AlertHighlights.danger
+        );
       }
     } else {
       this.list.push(current);
-      this.showAlert('Novas informações adicionadas com sucesso!');
+      this.showAlert(
+        'Novas informações adicionadas com sucesso!',
+        AlertHighlights.success
+      );
     }
   }
 
@@ -60,7 +83,7 @@ export class BitcoinService {
     let timer = setInterval(() => {
       this.counter++;
 
-      if (this.counter == 20) {
+      if (this.counter == this.updateInterval) {
         this.stopCount(timer);
 
         this.getData();
@@ -76,14 +99,18 @@ export class BitcoinService {
   }
 
   timeUntilUpdate() {
-    return 20 - this.counter;
+    return this.updateInterval - this.counter;
   }
 
-  showAlert(message: string) {
-    this.alertMessage = message;
-    this.alert = true;
+  showAlert(message: string, highlightType: AlertHighlights) {
+    this.alert = {
+      enabled: true,
+      message,
+      highlight: highlightType,
+    };
+
     setTimeout(() => {
-      this.alert = false;
+      this.alert.enabled = false;
     }, 3000);
   }
 }

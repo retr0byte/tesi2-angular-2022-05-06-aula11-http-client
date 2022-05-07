@@ -20,8 +20,11 @@
   <strong>{{ this.bitcoinService.timeUntilUpdate() }}s</strong>
 </p>
 
-<div class="alert alert-info" *ngIf="this.bitcoinService.alert">
-  {{ this.bitcoinService.alertMessage }}
+<div
+  class="alert {{ this.bitcoinService.alert.highlight }}"
+  *ngIf="this.bitcoinService.alert.enabled"
+>
+  {{ this.bitcoinService.alert.message }}
 </div>
 
 <table class="table table-striped">
