@@ -1,4 +1,18 @@
-<hello name="{{ name }}"></hello>
-<p>
-  Start editing to see some magic happen :)
-</p>
+<h3>
+  Tempo até o próximo update:
+  <span>{{ this.bitcoinService.timeUntilUpdate() }}s</span>
+</h3>
+
+<table border="1">
+  <tr>
+    <th>Update/Time</th>
+    <th>USD</th>
+    <th>BRL</th>
+  </tr>
+
+  <tr *ngFor="let rate of this.bitcoinService.list">
+    <td>{{ rate.time.updated }}</td>
+    <td>{{ rate.bpi.USD.rate_float }}</td>
+    <td>{{ rate.bpi.BRL.rate_float }}</td>
+  </tr>
+</table>
